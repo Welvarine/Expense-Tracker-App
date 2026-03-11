@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense Tracker — User Flow Diagrams</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">💰</span>
+        <div>
+          <span class="logo-title">Expense Tracker</span>
+          <span class="logo-sub">User Flow Diagrams</span>
+        </div>
+      </div>
+      <nav class="tab-nav" role="tablist">
+        <button class="tab-btn active" data-tab="onboarding" role="tab" aria-selected="true">
+          <span class="tab-icon">🚀</span>
+          <span>Onboarding</span>
+        </button>
+        <button class="tab-btn" data-tab="add-transaction" role="tab" aria-selected="false">
+          <span class="tab-icon">➕</span>
+          <span>Add Transaction</span>
+        </button>
+        <button class="tab-btn" data-tab="management" role="tab" aria-selected="false">
+          <span class="tab-icon">🗂️</span>
+          <span>Management</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+
+    <!-- ─── ONBOARDING ─────────────────────────────────────────────────────── -->
+    <section id="onboarding" class="diagram-section active" role="tabpanel">
+      <div class="section-intro">
+        <h1 class="section-title">Onboarding Flow</h1>
+        <p class="section-desc">Covers account creation, login, email verification, forgot-password, and dashboard landing with all decision branches and error states.</p>
+        <div class="legend">
+          <span class="legend-item screen">📱 Screen</span>
+          <span class="legend-item decision">🔷 Decision</span>
+          <span class="legend-item success">✅ Success</span>
+          <span class="legend-item error">❌ Error</span>
+          <span class="legend-item toast">🔔 Toast</span>
+        </div>
+      </div>
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="flow-container" id="onboarding-flow"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── ADD TRANSACTION ────────────────────────────────────────────────── -->
+    <section id="add-transaction" class="diagram-section" role="tabpanel">
+      <div class="section-intro">
+        <h1 class="section-title">Add Transaction Flow</h1>
+        <p class="section-desc">Entry from Dashboard through type-toggle, amount, description, category, date, review, submission, success/failure states, and offline edge cases.</p>
+        <div class="legend">
+          <span class="legend-item screen">📱 Screen</span>
+          <span class="legend-item decision">🔷 Decision</span>
+          <span class="legend-item success">✅ Success</span>
+          <span class="legend-item error">❌ Error</span>
+          <span class="legend-item toast">🔔 Toast</span>
+        </div>
+      </div>
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="flow-container" id="add-transaction-flow"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── MANAGEMENT ─────────────────────────────────────────────────────── -->
+    <section id="management" class="diagram-section" role="tabpanel">
+      <div class="section-intro">
+        <h1 class="section-title">Transaction Management</h1>
+        <p class="section-desc">Filtering by chip, revealing delete action, confirmation modal, success/failure deletion states, list and totals update, and edge cases.</p>
+        <div class="legend">
+          <span class="legend-item screen">📱 Screen</span>
+          <span class="legend-item decision">🔷 Decision</span>
+          <span class="legend-item success">✅ Success</span>
+          <span class="legend-item error">❌ Error</span>
+          <span class="legend-item toast">🔔 Toast</span>
+        </div>
+      </div>
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="flow-container" id="management-flow"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="flow-data.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>
