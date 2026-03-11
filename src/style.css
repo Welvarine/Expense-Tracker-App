@@ -1,0 +1,284 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Design Tokens ────────────────────────────────────────────────── */
+:root {
+  --font: 'Inter', system-ui, sans-serif;
+
+  /* Light */
+  --bg:           #f0f4ff;
+  --surface:      #ffffff;
+  --surface2:     #f8fafc;
+  --border:       #e2e8f0;
+  --text:         #1e293b;
+  --text2:        #64748b;
+  --text3:        #94a3b8;
+
+  --green:        #22c55e;
+  --green-dim:    #dcfce7;
+  --green-dark:   #15803d;
+  --red:          #ef4444;
+  --red-dim:      #fee2e2;
+  --red-dark:     #b91c1c;
+  --blue:         #3b82f6;
+  --blue-dim:     #dbeafe;
+  --blue-dark:    #1d4ed8;
+  --amber:        #f59e0b;
+  --amber-dim:    #fef3c7;
+  --purple:       #8b5cf6;
+  --purple-dim:   #ede9fe;
+
+  --radius:       14px;
+  --radius-sm:    8px;
+  --radius-lg:    22px;
+  --shadow:       0 2px 8px rgba(0,0,0,.08);
+  --shadow-lg:    0 8px 32px rgba(0,0,0,.14);
+  --transition:   .2s ease;
+
+  /* Nav / Phone shell */
+  --shell-bg:     #111827;
+  --shell-accent: #22c55e;
+}
+
+[data-theme="dark"] {
+  --bg:       #0f172a;
+  --surface:  #1e293b;
+  --surface2: #263146;
+  --border:   #334155;
+  --text:     #f1f5f9;
+  --text2:    #94a3b8;
+  --text3:    #64748b;
+  --shadow:   0 2px 8px rgba(0,0,0,.35);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.55);
+}
+
+/* ── Reset ────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background var(--transition), color var(--transition);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Phone Shell ──────────────────────────────────────────────────── */
+.phone-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+@media (min-width: 480px) {
+  .phone-shell {
+    align-items: center;
+    justify-content: flex-start;
+    padding: 32px 0 80px;
+  }
+  .phone-inner {
+    width: 390px;
+    background: var(--surface);
+    border-radius: 36px;
+    box-shadow: var(--shadow-lg);
+    border: 6px solid #1e293b;
+    overflow: hidden;
+    min-height: 600px;
+    position: relative;
+  }
+}
+
+.phone-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Screen content ───────────────────────────────────────────────── */
+.screen {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 20px 80px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Status bar ───────────────────────────────────────────────────── */
+.status-bar {
+  background: var(--shell-bg);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ── Typography ───────────────────────────────────────────────────── */
+h1 { font-size: 24px; font-weight: 800; line-height: 1.2; }
+h2 { font-size: 19px; font-weight: 700; }
+h3 { font-size: 15px; font-weight: 600; }
+p  { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+/* ── Buttons ──────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: var(--radius);
+  border: none;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  outline: none;
+}
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--green);
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) { background: var(--green-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(34,197,94,.35); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid var(--border);
+}
+.btn-secondary:hover:not(:disabled) { border-color: var(--blue); color: var(--blue); background: var(--blue-dim); }
+
+.btn-danger {
+  background: var(--red);
+  color: #fff;
+}
+.btn-danger:hover:not(:disabled) { background: var(--red-dark); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text2);
+  width: auto;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+.btn-ghost:hover { color: var(--blue); }
+
+.btn-sm { padding: 8px 14px; font-size: 13px; width: auto; border-radius: var(--radius-sm); }
+
+/* ── Inputs ───────────────────────────────────────────────────────── */
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label { font-size: 13px; font-weight: 600; color: var(--text); }
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+}
+.field input.error { border-color: var(--red); }
+.field .error-msg { font-size: 12px; color: var(--red); font-weight: 500; }
+
+/* ── Cards ────────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+/* ── Tags / Chips ─────────────────────────────────────────────────── */
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text2);
+  transition: all var(--transition);
+}
+.chip.active { background: var(--green); border-color: var(--green); color: #fff; }
+.chip:hover:not(.active) { border-color: var(--green); color: var(--green); }
+
+/* ── Divider ──────────────────────────────────────────────────────── */
+.divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+/* ── Badge ────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .3px;
+}
+.badge-admin { background: var(--purple-dim); color: var(--purple); }
+.badge-user  { background: var(--blue-dim);   color: var(--blue);   }
+
+/* ── Loading spinner ──────────────────────────────────────────────── */
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Toast animations ─────────────────────────────────────────────── */
+.toast-enter-active, .toast-leave-active { transition: all .3s ease; }
+.toast-enter-from { transform: translateY(-20px); opacity: 0; }
+.toast-leave-to   { transform: translateY(-20px); opacity: 0; }
+
+/* ── Fade / Slide page transitions ───────────────────────────────── */
+.fade-enter-active, .fade-leave-active { transition: opacity .2s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+
+/* ── Utility ──────────────────────────────────────────────────────── */
+.flex        { display: flex; }
+.items-center{ align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2       { gap: 8px; }
+.gap-3       { gap: 12px; }
+.gap-4       { gap: 16px; }
+.mt-1        { margin-top: 4px; }
+.mt-2        { margin-top: 8px; }
+.mt-3        { margin-top: 12px; }
+.mt-4        { margin-top: 16px; }
+.mt-6        { margin-top: 24px; }
+.text-center { text-align: center; }
+.text-sm     { font-size: 13px; }
+.text-xs     { font-size: 11px; }
+.font-bold   { font-weight: 700; }
+.text-green  { color: var(--green-dark); }
+.text-red    { color: var(--red); }
+.text-muted  { color: var(--text2); }
+.w-full      { width: 100%; }
+
+/* ── Empty state ──────────────────────────────────────────────────── */
+.empty-state {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 48px 24px; gap: 12px; text-align: center;
+}
+.empty-state .icon { font-size: 48px; }
