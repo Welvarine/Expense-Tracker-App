@@ -1,6 +1,6 @@
 <script setup>
-import { reactive, ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { reactive, ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../../stores/useAuthStore.js'
 import { useTransactionStore } from '../../stores/useTransactionStore.js'
 import { useFormValidation } from '../../composables/useFormValidation.js'
@@ -13,6 +13,7 @@ import ThemeToggle from '../auth/ThemeToggle.vue'
 const auth = useAuthStore()
 const store = useTransactionStore()
 const router = useRouter()
+const route = useRoute()
 const { showToast } = useToast()
 
 const categories = {
@@ -37,11 +38,13 @@ const form = reactive({
   amount: '',
   description: '',
   category: '',
-  date: new Date().toISOString().split('T')[0],
+  date: '',
   dueDate: ''
 })
 
-const currentCategories = computed(() => categories[form.type])
+const currentCategories = ref([])
+const loading = ref(false)
+const transactionId = route.params.id
 
 const { errors, validate } = useFormValidation({
   amount: [isRequired, isPositiveAmount],
@@ -49,11 +52,26 @@ const { errors, validate } = useFormValidation({
   date: [isRequired]
 })
 
-const loading = ref(false)
+onMounted(() => {
+  const tx = store.transactions.find(t => t.id === transactionId)
+  if (!tx || tx.userId !== auth.currentUser.id) {
+    showToast('❌ Transaction not found')
+    router.push('/dashboard')
+    return
+  }
+
+  form.type = tx.type
+  form.amount = tx.amount
+  form.description = tx.description
+  form.category = tx.category
+  form.date = tx.date
+  currentCategories.value = categories[form.type]
+})
 
 function setType(type) {
   form.type = type
   form.category = ''
+  currentCategories.value = categories[type]
 }
 
 async function submit() {
@@ -62,10 +80,10 @@ async function submit() {
   loading.value = true
   await new Promise(r => setTimeout(r, 400))
   
-  store.addTransaction({ ...form, userId: auth.currentUser.id })
+  store.updateTransaction(transactionId, { ...form })
   loading.value = false
   
-  showToast('✅ Transaction added successfully')
+  showToast('✅ Transaction updated successfully')
   router.back()
 }
 </script>
@@ -79,10 +97,10 @@ async function submit() {
       </button>
       <div class="header-content">
         <h2 class="header-title">
-          <span class="header-emoji">💳</span>
-          Add Transaction
+          <span class="header-emoji">✏️</span>
+          Edit Transaction
         </h2>
-        <p class="header-subtitle">Record your income or expense</p>
+        <p class="header-subtitle">Update your record details</p>
       </div>
     </header>
 
@@ -102,12 +120,6 @@ async function submit() {
       >
         <span>📥</span> Income
       </button>
-    </div>
-
-    <!-- Offline Banner -->
-    <div v-if="typeof window !== 'undefined' && !window.navigator?.onLine" class="offline-banner card p-3">
-      <span class="offline-icon">📵</span>
-      <span>You are offline. Changes will be saved locally.</span>
     </div>
 
     <form @submit.prevent="submit" class="form-container">
@@ -132,7 +144,7 @@ async function submit() {
         <AppInput 
           label="📝 Description (Optional)" 
           v-model="form.description" 
-          placeholder="e.g. Morning coffee" 
+          placeholder="e.g. Edited coffee expense" 
         />
       </div>
 
@@ -167,32 +179,12 @@ async function submit() {
         />
       </div>
 
-      <!-- Review Summary -->
-      <div v-if="form.amount > 0" class="review-card glass animate-fade-in">
-        <div class="review-header">
-          <span class="review-icon">👀</span>
-          <p class="review-title">Quick Review</p>
-        </div>
-        <div class="review-content">
-          <div class="review-row">
-            <span class="review-label">Transaction Type:</span>
-            <span class="review-value-tag" :class="form.type">
-              {{ form.type === 'income' ? '📥 Income' : '📤 Expense' }}
-            </span>
-          </div>
-          <div class="review-row">
-            <span class="review-label">Total Amount:</span>
-            <span class="review-amount">${{ form.amount }}</span>
-          </div>
-          <div class="review-row">
-            <span class="review-label">Category:</span>
-            <span class="review-value">{{ form.category || 'Not selected' }}</span>
-          </div>
-        </div>
-      </div>
-
       <AppButton type="submit" class="submit-btn animate-slide-in" style="animation-delay: 0.5s" :loading="loading">
-        <span>✅</span> Save Transaction
+        <span>💾</span> Save Changes
+      </AppButton>
+      
+      <AppButton variant="secondary" @click="router.back()" :disabled="loading" class="animate-slide-in" style="margin-top: 8px; animation-delay: 0.6s">
+        Cancel
       </AppButton>
     </form>
   </div>
@@ -320,19 +312,6 @@ async function submit() {
   transform: scale(1.1);
 }
 
-.offline-banner {
-  background: var(--amber-dim);
-  border: 1.5px solid var(--amber);
-  color: var(--amber);
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 20px;
-  font-size: 13px;
-  font-weight: 600;
-  border-radius: 12px;
-}
-
 .form-container {
   display: flex;
   flex-direction: column;
@@ -403,78 +382,6 @@ async function submit() {
   color: var(--red);
   font-weight: 600;
   margin: 0;
-}
-
-.review-card.glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1.5px solid var(--blue);
-  padding: 16px;
-  border-radius: 18px;
-}
-
-[data-theme="dark"] .review-card.glass {
-  background: rgba(26, 58, 82, 0.7);
-}
-
-.review-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.review-icon {
-  font-size: 18px;
-}
-
-.review-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text);
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.review-content {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.review-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 13px;
-}
-
-.review-label {
-  color: var(--text2);
-  font-weight: 500;
-}
-
-.review-value-tag {
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 12px;
-}
-
-.review-value-tag.income { background: var(--green-dim); color: var(--green-dark); }
-.review-value-tag.expense { background: var(--red-dim); color: var(--red-dark); }
-
-.review-value {
-  color: var(--text);
-  font-weight: 600;
-}
-
-.review-amount {
-  color: var(--blue);
-  font-weight: 800;
-  font-size: 18px;
 }
 
 .submit-btn {
