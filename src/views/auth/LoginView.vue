@@ -58,15 +58,7 @@ async function submit() {
       <p class="header-subtitle">Log in to your account.</p>
     </div>
 
-    <!-- Pre-filled info helper for demo -->
-    <div class="card demo-info mt-4 p-3 text-xs">
-      <span class="demo-icon">ℹ️</span>
-      <div>
-        <b>Demo Accounts:</b><br>
-        Admin: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fb9a9f969295bb9e838b9e95889ed59a8b8b">[email&#160;protected]</a> / Admin123!<br>
-        User: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="562325332416332e263338253378372626">[email&#160;protected]</a> / User123!
-      </div>
-    </div>
+    
 
     <form @submit.prevent="submit" class="login-form">
       <div class="form-group">
