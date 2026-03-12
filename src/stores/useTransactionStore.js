@@ -53,7 +53,7 @@ export const useTransactionStore = defineStore('transactions', () => {
   })
 
   // ── Actions ───────────────────────────────────────────────────────
-  function addTransaction({ userId, type, amount, description, category, date }) {
+  function addTransaction({ userId, type, amount, description, category, date, dueDate }) {
     const tx = {
       id: `tx-${Date.now()}`,
       userId,
@@ -62,6 +62,7 @@ export const useTransactionStore = defineStore('transactions', () => {
       description: description || '',
       category,
       date: date || new Date().toISOString().split('T')[0],
+      dueDate: dueDate || null,
       createdAt: new Date().toISOString()
     }
     transactions.value = [tx, ...transactions.value]
@@ -79,11 +80,29 @@ export const useTransactionStore = defineStore('transactions', () => {
     _persist()
   }
 
+  function updateTransaction(id, updates) {
+    const index = transactions.value.findIndex(t => t.id === id)
+    if (index === -1) return null
+
+    const updated = {
+      ...transactions.value[index],
+      ...updates,
+      amount: updates.amount !== undefined ? parseFloat(updates.amount) : transactions.value[index].amount,
+      updatedAt: new Date().toISOString()
+    }
+    
+    transactions.value[index] = updated
+    // Force reactivity update for the array
+    transactions.value = [...transactions.value]
+    _persist()
+    return updated
+  }
+
   return {
     transactions, allTransactions,
     platformTotals,
     userTransactions, filteredTransactions,
     totalIncome, totalExpense, balance,
-    addTransaction, deleteTransaction, deleteByUser
+    addTransaction, deleteTransaction, deleteByUser, updateTransaction
   }
 })

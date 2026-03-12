@@ -12,7 +12,7 @@ export const useAuthStore = defineStore('auth', () => {
   const users       = ref(storage.get('et_users', SEED_USERS))
   const currentUser = ref(storage.get('et_current_user', null))
 
-  // Persist whenever state changes
+  // Persist whenecd expense-tracker-appver state changes
   function _persist() {
     storage.set('et_users', users.value)
     storage.set('et_current_user', currentUser.value)
