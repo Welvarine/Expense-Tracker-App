@@ -12,7 +12,9 @@ const routes = [
   // ── User ──────────────────────────────────────────────────────────
   { path: '/dashboard',      name: 'dashboard',     component: () => import('../views/user/DashboardView.vue'),     meta: { requiresAuth: true, role: 'user' } },
   { path: '/add',            name: 'add',            component: () => import('../views/user/AddTransactionView.vue'), meta: { requiresAuth: true, role: 'user' } },
+  { path: '/edit/:id',       name: 'edit',           component: () => import('../views/user/EditTransactionView.vue'), meta: { requiresAuth: true, role: 'user' } },
   { path: '/transactions',   name: 'transactions',   component: () => import('../views/user/TransactionsView.vue'),  meta: { requiresAuth: true, role: 'user' } },
+  { path: '/budgets',        name: 'budgets',        component: () => import('../views/user/BudgetsView.vue'),       meta: { requiresAuth: true, role: 'user' } },
 
   // ── Admin ─────────────────────────────────────────────────────────
   { path: '/admin',               name: 'admin',              component: () => import('../views/admin/AdminDashboardView.vue'),    meta: { requiresAuth: true, role: 'admin' } },
@@ -36,7 +38,7 @@ router.beforeEach((to) => {
 
   if (auth.isAuthenticated) {
     // Redirect away from public pages
-    if (['/','login','signup','forgot-password'].includes(to.name) && !to.name.includes('verify')) {
+    if (['welcome','login','signup','forgot-password'].includes(to.name) && !to.name.includes('verify')) {
       return auth.isAdmin ? { name: 'admin' } : { name: 'dashboard' }
     }
     // Role guard
