@@ -16,7 +16,9 @@ defineEmits(['confirm', 'cancel'])
       <div v-if="show" class="modal-backdrop" @click.self="$emit('cancel')">
         <div class="modal-card card">
           <h3 class="font-bold">{{ title }}</h3>
-          <p class="mt-2 text-sm">{{ message }}</p>
+          <div class="modal-body mt-2">
+            <slot>{{ message }}</slot>
+          </div>
           <div class="modal-actions mt-4 flex gap-3">
             <button class="btn btn-secondary" @click="$emit('cancel')">{{ cancelText }}</button>
             <button 
