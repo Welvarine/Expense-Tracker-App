@@ -8,3 +8,8 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 app.mount('#app')
+
+// Enable hot module reload in development
+if (import.meta.hot) {
+  import.meta.hot.accept()
+}
