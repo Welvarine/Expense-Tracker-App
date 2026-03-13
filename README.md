@@ -360,11 +360,10 @@ The application works completely offline:
 ## 🤝 Contributing
 
 Contributions are welcome! Please follow these guidelines:
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a pull request
+1. Creating  branches
+2. Commit the changes
+3.  Push to the branch
+4.  Open a pull request
 
 ## 📝 License
 
