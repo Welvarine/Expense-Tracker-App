@@ -356,6 +356,8 @@ The application works completely offline:
 - [ ] Photo receipts/attachments
 - [ ] Savings goals
 - [ ] Expense forecasting
+- [ ] Adding priveleges for admin to create or initiate family accounts or other type of user accounts
+
 
 ## 🤝 Contributing
 
