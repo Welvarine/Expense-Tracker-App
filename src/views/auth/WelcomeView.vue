@@ -1,7 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import AppButton from '../../components/AppButton.vue'
-import ThemeToggle from './ThemeToggle.vue'
 import { ref, onMounted } from 'vue'
 
 const router = useRouter()
@@ -16,8 +15,6 @@ onMounted(() => {
 
 <template>
   <div class="welcome-page">
-    <ThemeToggle />
-
     <!-- Navigation Bar -->
     <nav class="navbar">
       <div class="nav-container">
@@ -414,7 +411,7 @@ body {
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 0.9fr;
-  gap: 20px;
+  gap: 40px;
   align-items: center;
   width: 100%;
   overflow: hidden;
@@ -425,7 +422,7 @@ body {
 }
 
 .hero-title {
-  font-size: 40px;
+  font-size: 48px;
   font-weight: 800;
   color: var(--text);
   margin: 0 0 16px 0;
@@ -832,6 +829,22 @@ body {
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .hero-title {
+    font-size: 40px;
+  }
+
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 768px) {
   .nav-links {
     display: none;

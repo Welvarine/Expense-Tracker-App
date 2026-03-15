@@ -8,7 +8,6 @@ import { isRequired, isPositiveAmount } from '../../utils/validators.js'
 import { useToast } from '../../composables/useToast.js'
 import AppInput from '../../components/AppInput.vue'
 import AppButton from '../../components/AppButton.vue'
-import ThemeToggle from '../auth/ThemeToggle.vue'
 
 const auth = useAuthStore()
 const store = useTransactionStore()
@@ -71,8 +70,7 @@ async function submit() {
 </script>
 
 <template>
-  <div class="screen pb-24">
-    <ThemeToggle />
+  <div class="screen">
     <header class="page-header">
       <button class="back-btn" @click="router.back()">
         <span class="back-icon">←</span>
@@ -219,14 +217,12 @@ async function submit() {
   to { opacity: 1; }
 }
 
-.pb-24 { padding-bottom: 96px; }
-
 .page-header {
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  margin-bottom: 24px;
-  padding-top: 8px;
+  margin-bottom: 32px;
+  padding: 32px 40px 0 40px;
 }
 
 .back-btn {
@@ -257,7 +253,7 @@ async function submit() {
 }
 
 .header-title {
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--text);
   margin: 0;
@@ -279,8 +275,8 @@ async function submit() {
 .type-toggle-container {
   display: flex;
   gap: 12px;
-  margin-bottom: 24px;
-  padding: 4px;
+  margin-bottom: 32px;
+  padding: 4px 40px;
   background: var(--surface2);
   border-radius: 14px;
   border: 1px solid var(--border);
@@ -337,6 +333,7 @@ async function submit() {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding: 0 40px 40px 40px;
 }
 
 .form-group {
@@ -486,5 +483,20 @@ async function submit() {
 
 .submit-btn:hover {
   transform: translateY(-2px) scale(1.01);
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    padding: 24px 20px 0 20px;
+  }
+  .header-title {
+    font-size: 24px;
+  }
+  .type-toggle-container {
+    padding: 4px 20px;
+  }
+  .form-container {
+    padding: 0 20px 24px 20px;
+  }
 }
 </style>

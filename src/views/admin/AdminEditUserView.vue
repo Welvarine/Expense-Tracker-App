@@ -82,7 +82,7 @@ function confirmDelete() {
 </script>
 
 <template>
-  <div class="screen pb-24">
+  <div class="screen">
     <!-- Header -->
     <header class="page-header">
       <button class="back-btn" @click="router.back()">
@@ -184,14 +184,12 @@ function confirmDelete() {
 </template>
 
 <style scoped>
-.pb-24 { padding-bottom: 96px; }
-
 .page-header {
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  margin-bottom: 24px;
-  padding-top: 8px;
+  margin-bottom: 32px;
+  padding: 32px 40px 0 40px;
 }
 
 .back-btn {
@@ -222,7 +220,7 @@ function confirmDelete() {
 }
 
 .header-title {
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--text);
   margin: 0;
@@ -238,6 +236,7 @@ function confirmDelete() {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding: 0 40px 40px 40px;
 }
 
 .form-group {

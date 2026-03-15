@@ -8,7 +8,6 @@ import { formatCurrency } from '../../utils/formatters.js'
 import { useToast } from '../../composables/useToast.js'
 import TransactionItem from '../../components/TransactionItem.vue'
 import AppModal from '../../components/AppModal.vue'
-import ThemeToggle from '../auth/ThemeToggle.vue'
 
 const auth = useAuthStore()
 const store = useTransactionStore()
@@ -47,8 +46,7 @@ function editTransaction(tx) {
 </script>
 
 <template>
-  <div class="screen pb-24">
-    <ThemeToggle />
+  <div class="screen">
     <!-- Header -->
     <header class="transactions-header">
       <div>
@@ -147,19 +145,17 @@ function editTransaction(tx) {
 </template>
 
 <style scoped>
-.pb-24 { padding-bottom: 96px; }
-
 .transactions-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 24px;
-  padding-top: 8px;
+  margin-bottom: 32px;
+  padding: 32px 40px 0 40px;
   gap: 16px;
 }
 
 .page-title {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 800;
   color: var(--text);
   margin: 0;
@@ -204,8 +200,8 @@ function editTransaction(tx) {
 }
 
 .salary-info-card {
-  margin-bottom: 24px;
-  padding: 16px;
+  margin-bottom: 32px;
+  padding: 20px 40px;
   background: linear-gradient(135deg, var(--blue-dim), var(--surface));
   border: 1.5px solid var(--blue);
   border-radius: 16px;
@@ -291,8 +287,8 @@ function editTransaction(tx) {
 .filters-container {
   display: flex;
   gap: 10px;
-  margin-bottom: 24px;
-  padding-bottom: 12px;
+  margin-bottom: 32px;
+  padding: 0 40px 12px 40px;
   border-bottom: 1px solid var(--border);
 }
 
@@ -331,7 +327,7 @@ function editTransaction(tx) {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px;
+  padding: 60px 40px;
   gap: 12px;
   text-align: center;
   margin-top: 48px;
@@ -386,6 +382,7 @@ function editTransaction(tx) {
 
 .transactions-card {
   overflow: hidden;
+  margin: 0 40px;
 }
 
 .transactions-header-info {

@@ -9,7 +9,6 @@ import { useFormValidation } from '../../composables/useFormValidation.js'
 import { isRequired, isPositiveAmount } from '../../utils/validators.js'
 import AppInput from '../../components/AppInput.vue'
 import AppButton from '../../components/AppButton.vue'
-import ThemeToggle from '../auth/ThemeToggle.vue'
 
 const auth = useAuthStore()
 const store = useTransactionStore()
@@ -82,9 +81,7 @@ function deleteIncome(id) {
 </script>
 
 <template>
-  <div class="screen pb-24">
-    <ThemeToggle />
-    
+  <div class="screen">
     <!-- Header -->
     <header class="page-header">
       <button class="back-btn" @click="router.back()">
@@ -211,14 +208,12 @@ function deleteIncome(id) {
 </template>
 
 <style scoped>
-.pb-24 { padding-bottom: 96px; }
-
 .page-header {
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  margin-bottom: 24px;
-  padding-top: 8px;
+  margin-bottom: 32px;
+  padding: 32px 40px 0 40px;
 }
 
 .back-btn {
@@ -249,7 +244,7 @@ function deleteIncome(id) {
 }
 
 .header-title {
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--text);
   margin: 0;
@@ -263,9 +258,10 @@ function deleteIncome(id) {
 
 .balance-overview {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+  padding: 0 40px;
 }
 
 .balance-card {
@@ -309,8 +305,9 @@ function deleteIncome(id) {
 }
 
 .form-section {
-  margin-bottom: 24px;
-  padding: 20px;
+  margin-bottom: 32px;
+  padding: 24px 40px;
+  border-radius: 16px;
 }
 
 .form-title {
@@ -403,7 +400,8 @@ function deleteIncome(id) {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
-  margin-top: 24px;
+  margin-top: 32px;
+  padding: 0 40px;
 }
 
 .section-title {
@@ -427,7 +425,7 @@ function deleteIncome(id) {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px;
+  padding: 60px 40px;
   gap: 12px;
   text-align: center;
   margin-top: 24px;
@@ -455,6 +453,7 @@ function deleteIncome(id) {
 .income-list {
   overflow: hidden;
   border-radius: 12px;
+  margin: 0 40px;
 }
 
 .p-0 {

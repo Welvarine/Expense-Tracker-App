@@ -12,8 +12,8 @@ const totalUsers = auth.allUsers.length
 </script>
 
 <template>
-  <div class="screen pb-24">
-    <header class="mb-6 mt-2">
+  <div class="screen">
+    <header class="mb-6 mt-2 px-10">
       <h1 class="font-bold">Admin Console</h1>
       <p class="text-sm mt-1">Platform overview and totals.</p>
     </header>
@@ -45,10 +45,37 @@ const totalUsers = auth.allUsers.length
 </template>
 
 <style scoped>
-.pb-24 { padding-bottom: 96px; }
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.px-10 { padding: 0 40px; }
+.mb-6 { margin-bottom: 32px; }
+.mt-2 { margin-top: 8px; }
+.mb-4 { margin-bottom: 24px; }
+.mb-6 { margin-bottom: 32px; }
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 32px; }
 .bg-purple-dim { background: var(--purple-dim); }
 .border-purple { border-color: var(--purple); }
 .text-purple { color: var(--purple); }
 .text-purple-dark { color: #5b21b6; }
+.block-stats { display: block; }
+.p-4 { padding: 20px 40px; }
+.flex { display: flex; }
+.justify-between { justify-content: space-between; }
+.items-center { align-items: center; }
+.gap-3 { gap: 12px; }
+.icon { font-size: 24px; }
+.font-bold { font-weight: 700; }
+.text-sm { font-size: 14px; }
+.text-xs { font-size: 12px; }
+.text-2xl { font-size: 24px; }
+.text-4xl { font-size: 36px; }
+.text-purple { color: var(--purple); }
+.text-purple-dark { color: #5b21b6; }
+.uppercase { text-transform: uppercase; }
+.tracking-wider { letter-spacing: 0.05em; }
+.py-6 { padding: 24px 0; }
+.py-3 { padding: 12px 0; }
+.mt-1 { margin-top: 4px; }
+.mt-2 { margin-top: 8px; }
+.btn { padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
+.btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.btn-sm { font-size: 12px; padding: 6px 12px; }
 </style>

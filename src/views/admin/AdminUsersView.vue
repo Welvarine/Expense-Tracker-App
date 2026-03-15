@@ -39,7 +39,7 @@ function confirmDelete() {
 </script>
 
 <template>
-  <div class="screen pb-24">
+  <div class="screen">
     <header class="page-header">
       <h1 class="page-title">👥 Manage Users</h1>
       <p class="page-subtitle">View and manage all user accounts</p>
@@ -106,15 +106,13 @@ function confirmDelete() {
 </template>
 
 <style scoped>
-.pb-24 { padding-bottom: 96px; }
-
 .page-header {
-  margin-bottom: 24px;
-  padding-top: 8px;
+  margin-bottom: 32px;
+  padding: 32px 40px 0 40px;
 }
 
 .page-title {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 800;
   color: var(--text);
   margin: 0 0 6px 0;
@@ -132,7 +130,7 @@ function confirmDelete() {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px;
+  padding: 60px 40px;
   gap: 12px;
   text-align: center;
   margin-top: 48px;
@@ -161,6 +159,7 @@ function confirmDelete() {
   overflow: hidden;
   border-radius: 16px;
   border: 1.5px solid var(--border);
+  margin: 0 40px;
 }
 
 .p-0 {

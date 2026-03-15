@@ -7,7 +7,6 @@ import { useToast } from '../../composables/useToast.js'
 import AppInput from '../../components/AppInput.vue'
 import AppButton from '../../components/AppButton.vue'
 import AppModal from '../../components/AppModal.vue'
-import ThemeToggle from '../auth/ThemeToggle.vue'
 
 const auth = useAuthStore()
 const budgetStore = useBudgetStore()
@@ -57,8 +56,7 @@ function handleDelete() {
 </script>
 
 <template>
-  <div class="screen pb-24">
-    <ThemeToggle />
+  <div class="screen">
     <header class="page-header">
       <button class="back-btn" @click="router.back()">←</button>
       <div class="header-content">
@@ -124,26 +122,25 @@ function handleDelete() {
 </template>
 
 <style scoped>
-.pb-24 { padding-bottom: 96px; }
-.page-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-top: 8px; }
+.page-header { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; padding: 32px 40px 0 40px; }
 .back-btn { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--surface); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-.header-title { font-size: 22px; font-weight: 700; margin: 0; }
+.header-title { font-size: 28px; font-weight: 700; margin: 0; }
 .header-subtitle { font-size: 13px; color: var(--text2); margin: 4px 0 0 0; }
 
-.salary-section { margin-bottom: 32px; padding: 20px; }
+.salary-section { margin-bottom: 32px; padding: 24px 40px; border-radius: 16px; }
 .card-title { font-size: 16px; font-weight: 700; margin: 0 0 8px 0; }
 .card-desc { font-size: 13px; color: var(--text2); margin-bottom: 16px; }
 .salary-input-group { display: flex; gap: 12px; align-items: flex-start; }
 .save-btn { height: 44px; padding: 0 20px; }
 
-.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding: 0 40px; }
 .section-title { font-size: 16px; font-weight: 700; margin: 0; }
 .add-btn { background: none; border: none; color: var(--blue); font-weight: 700; font-size: 13px; cursor: pointer; }
 
-.empty-budgets { text-align: center; padding: 40px 20px; color: var(--text2); }
+.empty-budgets { text-align: center; padding: 60px 40px; color: var(--text2); }
 .empty-icon { font-size: 48px; display: block; margin-bottom: 12px; }
 
-.budget-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.budget-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; padding: 0 40px; }
 .budget-card { padding: 16px; position: relative; }
 .budget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 .budget-cat { font-weight: 700; font-size: 14px; }
