@@ -1,17 +1,18 @@
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/useAuthStore.js'
 import { useFormValidation } from '../../composables/useFormValidation.js'
 import { isRequired, isValidEmail } from '../../utils/validators.js'
 import AppInput from '../../components/AppInput.vue'
 import AppButton from '../../components/AppButton.vue'
-import ThemeToggle from './ThemeToggle.vue'
 import { useToast } from '../../composables/useToast.js'
 
 const auth = useAuthStore()
 const router = useRouter()
 const { showToast } = useToast()
+const isDark = inject('isDark')
+const toggleTheme = inject('toggleTheme')
 const loading = ref(false)
 const topError = ref('')
 
@@ -46,7 +47,11 @@ async function submit() {
 
 <template>
   <div class="screen login-screen">
-    <ThemeToggle />
+    <!-- Theme Toggle -->
+    <button class="theme-toggle-btn" @click="toggleTheme" :title="isDark ? 'Light Mode' : 'Dark Mode'">
+      {{ isDark ? '☀️' : '🌙' }}
+    </button>
+
     <div class="login-header">
       <button class="back-btn" @click="router.push('/')">
         ← Back to Home
@@ -110,12 +115,41 @@ async function submit() {
 
 <style scoped>
 .login-screen {
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
+  padding: 40px 20px;
+  position: relative;
+}
+
+.theme-toggle-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: var(--blue);
+  background: var(--blue-dim);
 }
 
 .login-header {
-  padding-bottom: 16px;
+  padding-bottom: 24px;
 }
 
 .back-btn {
@@ -135,10 +169,10 @@ async function submit() {
 }
 
 .header-title {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--text);
-  margin: 8px 0;
+  margin: 12px 0;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -189,7 +223,7 @@ async function submit() {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 24px;
+  margin-top: 32px;
 }
 
 .form-group {

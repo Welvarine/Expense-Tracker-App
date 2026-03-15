@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/useAuthStore.js'
 import { useToast } from '../../composables/useToast.js'
 import AppButton from '../../components/AppButton.vue'
-import ThemeToggle from './ThemeToggle.vue'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -24,7 +23,6 @@ async function verify() {
 
 <template>
   <div class="screen text-center verify-screen">
-    <ThemeToggle />
     <div class="empty-state">
       <div class="icon">📧</div>
       <h2 class="header-title">
@@ -52,8 +50,9 @@ async function verify() {
   justify-content: center;
   align-items: center;
   gap: 32px;
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
+  padding: 40px 20px;
 }
 
 .empty-state {
@@ -80,7 +79,7 @@ async function verify() {
 }
 
 .header-title {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--text);
   margin: 0;

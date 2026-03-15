@@ -5,23 +5,17 @@ import { useTransactionStore } from './useTransactionStore.js'
 
 export const useBudgetStore = defineStore('budgets', () => {
   const budgets = ref(storage.get('et_budgets', []))
-  const salaries = ref(storage.get('et_salaries', {})) // { userId: amount }
 
   const transactionStore = useTransactionStore()
 
   function _persist() {
     storage.set('et_budgets', budgets.value)
-    storage.set('et_salaries', salaries.value)
   }
 
-  // ── Salary Actions ────────────────────────────────────────────────
-  function setSalary(userId, amount) {
-    salaries.value[userId] = parseFloat(amount)
-    _persist()
-  }
-
+  // ── Salary Actions (calculated from income transactions) ────────────
   function getSalary(userId) {
-    return salaries.value[userId] || 0
+    // Salary is the total income from all transactions
+    return transactionStore.totalIncome(userId).value
   }
 
   // ── Budget CRUD ───────────────────────────────────────────────────
@@ -79,9 +73,8 @@ export const useBudgetStore = defineStore('budgets', () => {
   }
 
   return {
-    budgets, salaries,
-    setSalary, getSalary,
+    budgets,
     userBudgets, addBudget, updateBudget, deleteBudget,
-    getRemainingSalary, getCategorySpending
+    getSalary, getRemainingSalary, getCategorySpending
   }
 })

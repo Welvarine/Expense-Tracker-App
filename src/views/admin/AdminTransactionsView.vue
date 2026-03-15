@@ -43,8 +43,8 @@ function confirmDelete() {
 </script>
 
 <template>
-  <div class="screen pb-24">
-    <header class="mb-6 mt-2">
+  <div class="screen">
+    <header class="mb-6 mt-2 px-10">
       <h1 class="font-bold">All Transactions</h1>
       <p class="text-sm mt-1">Global view across all accounts.</p>
     </header>
@@ -95,7 +95,32 @@ function confirmDelete() {
 </template>
 
 <style scoped>
-.pb-24 { padding-bottom: 96px; }
+.px-10 { padding: 0 40px; }
+.mb-6 { margin-bottom: 32px; }
+.mt-2 { margin-top: 8px; }
+.flex { display: flex; }
+.gap-2 { gap: 8px; }
+.mb-6 { margin-bottom: 32px; }
+.mt-8 { margin-top: 32px; }
+.font-bold { font-weight: 700; }
+.text-sm { font-size: 14px; }
+.mt-1 { margin-top: 4px; }
+.chip { padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface); cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.2s; }
+.chip.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+.empty-state { text-align: center; padding: 60px 40px; color: var(--text2); }
+.icon { font-size: 48px; display: block; margin-bottom: 12px; }
+.card { overflow: hidden; border-radius: 16px; border: 1.5px solid var(--border); margin: 0 40px; }
+.p-0 { padding: 0; }
+.px-4 { padding: 0 20px; }
 .border-b { border-bottom: 1px solid var(--border); }
+.transaction-item { border-bottom: 1px solid var(--border); }
 .transaction-item:last-child { border-bottom: none; }
+.py-3 { padding: 12px 0; }
+.min-w-0 { min-width: 0; }
+.pr-4 { padding-right: 20px; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.text-xs { font-size: 12px; }
+.text-muted { color: var(--text2); }
+.btn-ghost { background: none; border: none; cursor: pointer; }
+.text-red { color: var(--red); }
 </style>

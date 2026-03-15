@@ -7,7 +7,6 @@ import { isRequired, isValidEmail, isStrongPassword } from '../../utils/validato
 import { useToast } from '../../composables/useToast.js'
 import AppInput from '../../components/AppInput.vue'
 import AppButton from '../../components/AppButton.vue'
-import ThemeToggle from './ThemeToggle.vue'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -54,7 +53,6 @@ async function setNewPassword() {
 
 <template>
   <div class="screen forgot-screen">
-    <ThemeToggle />
     <button class="back-btn" @click="router.push('/login')">← Back to login</button>
     
     <h2 class="header-title">
@@ -110,8 +108,9 @@ async function setNewPassword() {
 
 <style scoped>
 .forgot-screen {
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
+  padding: 40px 20px;
 }
 
 .back-btn {
@@ -131,10 +130,10 @@ async function setNewPassword() {
 }
 
 .header-title {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--text);
-  margin: 8px 0;
+  margin: 12px 0;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -154,7 +153,7 @@ async function setNewPassword() {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 24px;
+  margin-top: 32px;
 }
 
 .form-group {

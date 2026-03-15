@@ -20,11 +20,14 @@ const { showToast } = useToast()
 
 const userId = auth.currentUser.id
 const balance = store.balance(userId)
-const income = store.totalIncome(userId)
-const expense = store.totalExpense(userId)
+const totalIncomeComputed = store.totalIncome(userId)
+const totalExpenseComputed = store.totalExpense(userId)
+
+const income = computed(() => totalIncomeComputed.value)
+const expense = computed(() => totalExpenseComputed.value)
 
 const salary = computed(() => budgetStore.getSalary(userId))
-const remainingSalary = budgetStore.getRemainingSalary(userId)
+const remainingSalary = computed(() => salary.value - expense.value)
 
 const budgets = budgetStore.userBudgets(userId)
 const budgetSummary = computed(() => {
@@ -85,20 +88,23 @@ function editTransaction(tx) {
             {{ formatCurrency(remainingSalary.value) }}
           </h3>
         </div>
-        <div class="salary-total">of {{ formatCurrency(salary) }}</div>
+        <div class="salary-total">of {{ formatCurrency(salary.value) }}</div>
       </div>
     </div>
 
     <!-- Income / Expense Split -->
     <div class="summary-grid animate-fade-in" style="animation-delay: 0.1s">
-      <SummaryCard title="Income" icon="📥" :amount="formatCurrency(income.value)" variant="income" />
-      <SummaryCard title="Expense" icon="📤" :amount="formatCurrency(expense.value)" variant="expense" />
+      <SummaryCard title="Income" icon="📥" :amount="formatCurrency(income)" variant="income" />
+      <SummaryCard title="Expense" icon="📤" :amount="formatCurrency(expense)" variant="expense" />
     </div>
 
     <!-- Quick Actions -->
     <div class="quick-actions animate-slide-in" style="animation-delay: 0.2s">
       <button class="action-btn primary" @click="router.push('/add')">
         <span>➕</span> Add Transaction
+      </button>
+      <button class="action-btn secondary" @click="router.push('/income')">
+        <span>💰</span> Manage Income
       </button>
       <button class="action-btn secondary" @click="router.push('/budgets')">
         <span>🎯</span> Budgets
@@ -166,39 +172,57 @@ function editTransaction(tx) {
 </template>
 
 <style scoped>
-.pb-24 { padding-bottom: 96px; }
-.dashboard-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; padding-top: 8px; gap: 16px; }
+.pb-24 { padding-bottom: 0; }
+.dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; gap: 16px; }
 .header-left { flex: 1; }
-.page-title { font-size: 26px; font-weight: 800; color: var(--text); margin: 0; display: flex; align-items: center; gap: 8px; }
-.greeting { font-size: 13px; color: var(--text2); margin: 6px 0 0 0; font-weight: 500; }
-.avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25); flex-shrink: 0; }
-.balance-area { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-.balance-card { text-align: center; padding: 24px; background: linear-gradient(135deg, var(--blue-dim), var(--surface)); border: 1.5px solid var(--blue); }
-.balance-label { font-size: 12px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 8px 0; }
-.balance-amount { font-size: 44px; font-weight: 800; color: var(--blue); margin: 0 0 8px 0; line-height: 1; }
+.page-title { font-size: 32px; font-weight: 800; color: var(--text); margin: 0; }
+.greeting { font-size: 14px; color: var(--text2); margin: 6px 0 0 0; font-weight: 500; }
+.avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25); flex-shrink: 0; }
+
+.balance-area { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 32px; }
+.balance-card { text-align: center; padding: 28px; background: linear-gradient(135deg, var(--blue-dim), var(--surface)); border: 1.5px solid var(--blue); border-radius: 16px; }
+.balance-label { font-size: 12px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 12px 0; }
+.balance-amount { font-size: 48px; font-weight: 800; color: var(--blue); margin: 0 0 8px 0; line-height: 1; }
 .balance-description { font-size: 13px; color: var(--text2); margin: 0; font-weight: 500; }
-.salary-card { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: var(--surface); border-left: 4px solid var(--blue); }
+.salary-card { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; background: var(--surface); border-left: 4px solid var(--blue); border-radius: 12px; }
 .salary-label { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; margin-bottom: 4px; }
-.salary-amount { font-size: 20px; font-weight: 800; color: var(--text); margin: 0; }
-.salary-total { font-size: 12px; font-weight: 600; color: var(--text2); }
+.salary-amount { font-size: 24px; font-weight: 800; color: var(--text); margin: 0; }
+.salary-total { font-size: 13px; font-weight: 600; color: var(--text2); }
 .text-red { color: var(--red); }
-.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-.quick-actions { display: flex; gap: 12px; margin-bottom: 24px; }
-.action-btn { flex: 1; padding: 12px 16px; border-radius: 12px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font); }
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 32px; }
+.action-btn { padding: 14px 20px; border-radius: 12px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font); }
 .action-btn.primary { background: var(--blue); color: #fff; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2); }
+.action-btn.primary:hover { background: var(--blue-dark); transform: translateY(-2px); }
 .action-btn.secondary { background: var(--surface2); color: var(--text); border: 1.5px solid var(--border); }
-.budget-section { margin-bottom: 24px; }
-.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.section-title { font-size: 15px; font-weight: 700; color: var(--text); margin: 0; }
-.view-all-link { background: none; border: none; color: var(--blue); font-size: 12px; font-weight: 700; cursor: pointer; padding: 0; }
-.mt-4 { margin-top: 16px; }
-.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; text-align: center; }
-.empty-icon { font-size: 48px; margin-bottom: 12px; }
+.action-btn.secondary:hover { border-color: var(--blue); background: var(--blue-dim); }
+.budget-section { margin-bottom: 32px; }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.section-title { font-size: 18px; font-weight: 700; color: var(--text); margin: 0; }
+.view-all-link { background: none; border: none; color: var(--blue); font-size: 13px; font-weight: 700; cursor: pointer; padding: 0; transition: all 0.2s; }
+.view-all-link:hover { color: var(--blue-dark); }
+.mt-4 { margin-top: 24px; }
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 40px; text-align: center; }
+.empty-icon { font-size: 64px; margin-bottom: 16px; }
+.empty-title { font-size: 20px; font-weight: 700; color: var(--text); margin: 0 0 8px 0; }
+.empty-text { font-size: 14px; color: var(--text2); margin: 0 0 20px 0; }
+.empty-action-btn { padding: 12px 24px; background: var(--blue); color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+.empty-action-btn:hover { background: var(--blue-dark); transform: translateY(-2px); }
 .transactions-card { margin-bottom: 20px; }
-.transactions-list { padding: 8px; }
+.transactions-list { padding: 0; }
 
 .animate-fade-in { animation: fadeIn 0.5s ease forwards; opacity: 0; }
 .animate-slide-in { animation: slideIn 0.5s ease forwards; opacity: 0; }
 @keyframes fadeIn { to { opacity: 1; } }
 @keyframes slideIn { from { transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 768px) {
+  .dashboard-header { margin-bottom: 24px; }
+  .page-title { font-size: 26px; }
+  .balance-area { gap: 16px; margin-bottom: 24px; }
+  .summary-grid { margin-bottom: 24px; }
+  .quick-actions { margin-bottom: 24px; }
+  .section-header { margin-bottom: 12px; }
+  .section-title { font-size: 16px; }
+}
 </style>
