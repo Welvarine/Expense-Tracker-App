@@ -14,11 +14,13 @@ const routes = [
   { path: '/add',            name: 'add',            component: () => import('../views/user/AddTransactionView.vue'), meta: { requiresAuth: true, role: 'user' } },
   { path: '/edit/:id',       name: 'edit',           component: () => import('../views/user/EditTransactionView.vue'), meta: { requiresAuth: true, role: 'user' } },
   { path: '/transactions',   name: 'transactions',   component: () => import('../views/user/TransactionsView.vue'),  meta: { requiresAuth: true, role: 'user' } },
+  { path: '/income',         name: 'income',         component: () => import('../views/user/IncomeView.vue'),        meta: { requiresAuth: true, role: 'user' } },
   { path: '/budgets',        name: 'budgets',        component: () => import('../views/user/BudgetsView.vue'),       meta: { requiresAuth: true, role: 'user' } },
 
   // ── Admin ─────────────────────────────────────────────────────────
   { path: '/admin',               name: 'admin',              component: () => import('../views/admin/AdminDashboardView.vue'),    meta: { requiresAuth: true, role: 'admin' } },
   { path: '/admin/users',         name: 'admin-users',        component: () => import('../views/admin/AdminUsersView.vue'),        meta: { requiresAuth: true, role: 'admin' } },
+  { path: '/admin/users/:id',     name: 'admin-edit-user',    component: () => import('../views/admin/AdminEditUserView.vue'),     meta: { requiresAuth: true, role: 'admin' } },
   { path: '/admin/transactions',  name: 'admin-transactions', component: () => import('../views/admin/AdminTransactionsView.vue'), meta: { requiresAuth: true, role: 'admin' } },
 
   // Catch-all
