@@ -20,11 +20,14 @@ const { showToast } = useToast()
 
 const userId = auth.currentUser.id
 const balance = store.balance(userId)
-const income = store.totalIncome(userId)
-const expense = store.totalExpense(userId)
+const totalIncomeComputed = store.totalIncome(userId)
+const totalExpenseComputed = store.totalExpense(userId)
+
+const income = computed(() => totalIncomeComputed.value)
+const expense = computed(() => totalExpenseComputed.value)
 
 const salary = computed(() => budgetStore.getSalary(userId))
-const remainingSalary = budgetStore.getRemainingSalary(userId)
+const remainingSalary = computed(() => salary.value - expense.value)
 
 const budgets = budgetStore.userBudgets(userId)
 const budgetSummary = computed(() => {
@@ -85,20 +88,23 @@ function editTransaction(tx) {
             {{ formatCurrency(remainingSalary.value) }}
           </h3>
         </div>
-        <div class="salary-total">of {{ formatCurrency(salary) }}</div>
+        <div class="salary-total">of {{ formatCurrency(salary.value) }}</div>
       </div>
     </div>
 
     <!-- Income / Expense Split -->
     <div class="summary-grid animate-fade-in" style="animation-delay: 0.1s">
-      <SummaryCard title="Income" icon="📥" :amount="formatCurrency(income.value)" variant="income" />
-      <SummaryCard title="Expense" icon="📤" :amount="formatCurrency(expense.value)" variant="expense" />
+      <SummaryCard title="Income" icon="📥" :amount="formatCurrency(income)" variant="income" />
+      <SummaryCard title="Expense" icon="📤" :amount="formatCurrency(expense)" variant="expense" />
     </div>
 
     <!-- Quick Actions -->
     <div class="quick-actions animate-slide-in" style="animation-delay: 0.2s">
       <button class="action-btn primary" @click="router.push('/add')">
         <span>➕</span> Add Transaction
+      </button>
+      <button class="action-btn secondary" @click="router.push('/income')">
+        <span>💰</span> Manage Income
       </button>
       <button class="action-btn secondary" @click="router.push('/budgets')">
         <span>🎯</span> Budgets
@@ -183,8 +189,8 @@ function editTransaction(tx) {
 .salary-total { font-size: 12px; font-weight: 600; color: var(--text2); }
 .text-red { color: var(--red); }
 .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-.quick-actions { display: flex; gap: 12px; margin-bottom: 24px; }
-.action-btn { flex: 1; padding: 12px 16px; border-radius: 12px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font); }
+.quick-actions { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+.action-btn { flex: 1; padding: 12px 16px; border-radius: 12px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font); min-width: 120px; }
 .action-btn.primary { background: var(--blue); color: #fff; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2); }
 .action-btn.secondary { background: var(--surface2); color: var(--text); border: 1.5px solid var(--border); }
 .budget-section { margin-bottom: 24px; }

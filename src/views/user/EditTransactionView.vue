@@ -53,19 +53,39 @@ const { errors, validate } = useFormValidation({
 })
 
 onMounted(() => {
-  const tx = store.transactions.find(t => t.id === transactionId)
-  if (!tx || tx.userId !== auth.currentUser.id) {
+  const userId = auth.currentUser.id
+  const userTxs = store.userTransactions(userId)
+  
+  console.log('🔍 DEBUG INFO:')
+  console.log('User ID:', userId)
+  console.log('Transaction ID from URL:', transactionId)
+  console.log('All user transactions:', userTxs.value)
+  
+  // Find the transaction by ID
+  const tx = userTxs.value.find(t => {
+    console.log(`Comparing: ${String(t.id)} === ${String(transactionId)}`)
+    return String(t.id) === String(transactionId)
+  })
+  
+  console.log('Found transaction:', tx)
+  
+  if (!tx) {
+    console.error('❌ Transaction not found!')
     showToast('❌ Transaction not found')
     router.push('/dashboard')
     return
   }
 
+  // Load transaction into form
   form.type = tx.type
-  form.amount = tx.amount
+  form.amount = String(tx.amount)
   form.description = tx.description
   form.category = tx.category
   form.date = tx.date
+  form.dueDate = tx.dueDate || ''
   currentCategories.value = categories[form.type]
+  
+  console.log('✅ Transaction loaded successfully')
 })
 
 function setType(type) {
@@ -80,7 +100,10 @@ async function submit() {
   loading.value = true
   await new Promise(r => setTimeout(r, 400))
   
-  store.updateTransaction(transactionId, { ...form })
+  store.updateTransaction(transactionId, { 
+    ...form,
+    amount: parseFloat(form.amount)
+  })
   loading.value = false
   
   showToast('✅ Transaction updated successfully')
@@ -100,7 +123,7 @@ async function submit() {
           <span class="header-emoji">✏️</span>
           Edit Transaction
         </h2>
-        <p class="header-subtitle">Update your record details</p>
+        <p class="header-subtitle">Update your transaction details</p>
       </div>
     </header>
 
@@ -144,7 +167,7 @@ async function submit() {
         <AppInput 
           label="📝 Description (Optional)" 
           v-model="form.description" 
-          placeholder="e.g. Edited coffee expense" 
+          placeholder="e.g. Morning coffee" 
         />
       </div>
 
@@ -179,12 +202,32 @@ async function submit() {
         />
       </div>
 
+      <!-- Review Summary -->
+      <div v-if="form.amount > 0" class="review-card glass animate-fade-in">
+        <div class="review-header">
+          <span class="review-icon">👀</span>
+          <p class="review-title">Quick Review</p>
+        </div>
+        <div class="review-content">
+          <div class="review-row">
+            <span class="review-label">Transaction Type:</span>
+            <span class="review-value-tag" :class="form.type">
+              {{ form.type === 'income' ? '📥 Income' : '📤 Expense' }}
+            </span>
+          </div>
+          <div class="review-row">
+            <span class="review-label">Total Amount:</span>
+            <span class="review-amount">${{ form.amount }}</span>
+          </div>
+          <div class="review-row">
+            <span class="review-label">Category:</span>
+            <span class="review-value">{{ form.category || 'Not selected' }}</span>
+          </div>
+        </div>
+      </div>
+
       <AppButton type="submit" class="submit-btn animate-slide-in" style="animation-delay: 0.5s" :loading="loading">
-        <span>💾</span> Save Changes
-      </AppButton>
-      
-      <AppButton variant="secondary" @click="router.back()" :disabled="loading" class="animate-slide-in" style="margin-top: 8px; animation-delay: 0.6s">
-        Cancel
+        <span>💾</span> Update Transaction
       </AppButton>
     </form>
   </div>
@@ -382,6 +425,78 @@ async function submit() {
   color: var(--red);
   font-weight: 600;
   margin: 0;
+}
+
+.review-card.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid var(--blue);
+  padding: 16px;
+  border-radius: 18px;
+}
+
+[data-theme="dark"] .review-card.glass {
+  background: rgba(26, 58, 82, 0.7);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.review-icon {
+  font-size: 18px;
+}
+
+.review-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.review-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.review-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.review-label {
+  color: var(--text2);
+  font-weight: 500;
+}
+
+.review-value-tag {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.review-value-tag.income { background: var(--green-dim); color: var(--green-dark); }
+.review-value-tag.expense { background: var(--red-dim); color: var(--red-dark); }
+
+.review-value {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.review-amount {
+  color: var(--blue);
+  font-weight: 800;
+  font-size: 18px;
 }
 
 .submit-btn {
