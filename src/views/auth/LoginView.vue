@@ -36,7 +36,12 @@ async function submit() {
     if (!auth.currentUser.verified) {
       router.push('/verify-email')
     } else {
-      router.push(auth.isAdmin ? '/admin' : '/dashboard')
+      // Redirect based on role
+      const redirect = auth.currentUser.role === 'admin' ? '/admin' : '/dashboard'
+      
+      // Force a full page reload per user request
+      await router.push(redirect)
+      window.location.reload()
     }
   } else {
     topError.value = res.error
@@ -48,12 +53,12 @@ async function submit() {
 <template>
   <div class="screen login-screen">
     <!-- Theme Toggle -->
-    <button class="theme-toggle-btn" @click="toggleTheme" :title="isDark ? 'Light Mode' : 'Dark Mode'">
+    <button class="theme-toggle-btn" @click="toggleTheme" :title="isDark ? 'Light Mode' : 'Dark Mode'" aria-label="Toggle dark mode">
       {{ isDark ? '☀️' : '🌙' }}
     </button>
 
     <div class="login-header">
-      <button class="back-btn" @click="router.push('/')">
+      <button class="back-btn" @click="router.push('/')" aria-label="Go back to home">
         ← Back to Home
       </button>
       <h2 class="header-title">
@@ -65,13 +70,14 @@ async function submit() {
 
     
 
-    <form @submit.prevent="submit" class="login-form">
+    <form @submit.prevent="submit" class="login-form" novalidate>
       <div class="form-group">
-        <label class="form-label">
-          <span class="input-icon">📧</span>
+        <label class="form-label" for="login-email">
+          <span class="input-icon" aria-hidden="true">📧</span>
           Email
         </label>
         <AppInput 
+          id="login-email"
           type="email" 
           v-model="form.email" 
           :error="errors.email"
@@ -80,11 +86,12 @@ async function submit() {
       </div>
 
       <div class="form-group">
-        <label class="form-label">
-          <span class="input-icon">🔑</span>
+        <label class="form-label" for="login-password">
+          <span class="input-icon" aria-hidden="true">🔑</span>
           Password
         </label>
         <AppInput 
+          id="login-password"
           type="password" 
           v-model="form.password" 
           :error="errors.password"
@@ -92,9 +99,22 @@ async function submit() {
         />
       </div>
 
+      <div class="form-group">
+        <label class="form-label" for="login-role">
+          <span class="input-icon" aria-hidden="true">🎯</span>
+          Account Role
+        </label>
+        <AppInput 
+          id="login-role"
+          type="select" 
+          v-model="form.role" 
+          :options="[{value: 'user', label: '👤 User'}, {value: 'admin', label: '👨‍💼 Admin'}]" 
+        />
+      </div>
+
       <div class="form-footer">
-        <label class="checkbox-label">
-          <input type="checkbox"> Remember me
+        <label class="checkbox-label" for="login-remember">
+          <input type="checkbox" id="login-remember"> Remember me
         </label>
         <button type="button" class="forgot-link" @click="router.push('/forgot-password')">
           Forgot Password?

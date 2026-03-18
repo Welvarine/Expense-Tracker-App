@@ -18,6 +18,21 @@ const budgetStore = useBudgetStore()
 const router = useRouter()
 const { showToast } = useToast()
 
+const selectedCurrency = ref(auth.currentUser?.currency || 'USD')
+const currencyOptions = [
+  { value: 'USD', label: '🇺🇸 USD' },
+  { value: 'EUR', label: '🇪🇺 EUR' },
+  { value: 'GBP', label: '🇬🇧 GBP' },
+  { value: 'JPY', label: '🇯🇵 JPY' },
+  { value: 'RWF', label: '🇷🇼 RWF' }
+]
+
+function handleCurrencyChange(e) {
+  selectedCurrency.value = e.target.value
+  auth.updatePreferences({ currency: e.target.value })
+  showToast('✅ Currency updated')
+}
+
 const userId = auth.currentUser.id
 const balance = store.balance(userId)
 const totalIncomeComputed = store.totalIncome(userId)
@@ -70,25 +85,38 @@ function editTransaction(tx) {
         <h1 class="page-title">📊 Dashboard</h1>
         <p class="greeting">Hello, {{ auth.currentUser?.name }}! 👋</p>
       </div>
-      <div class="avatar">{{ auth.currentUser?.name.charAt(0).toUpperCase() }}</div>
+      
+      <div class="header-tools">
+        <select 
+          class="currency-select"
+          v-model="selectedCurrency"
+          @change="handleCurrencyChange"
+          aria-label="Select preferred currency"
+        >
+          <option v-for="opt in currencyOptions" :key="opt.value" :value="opt.value">
+            {{ opt.label }}
+          </option>
+        </select>
+        <div class="avatar">{{ auth.currentUser?.name.charAt(0).toUpperCase() }}</div>
+      </div>
     </header>
 
     <!-- Main Balance Card Area -->
     <div class="balance-area animate-fade-in">
-      <div class="balance-card card">
+      <div class="balance-card card" :key="'balance-' + selectedCurrency">
         <p class="balance-label">💰 Total Balance</p>
-        <h2 class="balance-amount">{{ formatCurrency(balance.value) }}</h2>
+        <h2 class="balance-amount">{{ formatCurrency(balance) }}</h2>
         <p class="balance-description">Current combined account total</p>
       </div>
 
       <div v-if="salary > 0" class="salary-card card animate-slide-in">
         <div class="salary-info">
           <p class="salary-label">💵 Remaining Salary</p>
-          <h3 class="salary-amount" :class="{ 'text-red': remainingSalary.value < 0 }">
-            {{ formatCurrency(remainingSalary.value) }}
+          <h3 class="salary-amount" :class="{ 'text-red': remainingSalary < 0 }">
+            {{ formatCurrency(remainingSalary) }}
           </h3>
         </div>
-        <div class="salary-total">of {{ formatCurrency(salary.value) }}</div>
+        <div class="salary-total">of {{ formatCurrency(salary) }}</div>
       </div>
     </div>
 
@@ -177,6 +205,17 @@ function editTransaction(tx) {
 .header-left { flex: 1; }
 .page-title { font-size: 32px; font-weight: 800; color: var(--text); margin: 0; }
 .greeting { font-size: 14px; color: var(--text2); margin: 6px 0 0 0; font-weight: 500; }
+.header-tools { display: flex; align-items: center; gap: 16px; }
+.currency-select { 
+  background: var(--surface); 
+  border: 1.5px solid var(--border); 
+  border-radius: 8px; 
+  padding: 6px 12px; 
+  color: var(--text); 
+  font-weight: 600; 
+  font-size: 13px;
+  cursor: pointer;
+}
 .avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25); flex-shrink: 0; }
 
 .balance-area { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 32px; }

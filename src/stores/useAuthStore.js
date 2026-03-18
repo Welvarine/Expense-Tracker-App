@@ -15,12 +15,17 @@ export const useAuthStore = defineStore('auth', () => {
   // ── Initialize on Store Creation ──────────────────────────────────
   // This runs when the store is first created
   function initializeAuth() {
-    const saved = storage.get('et_current_user', null)
-    if (saved) {
-      console.log('✅ Loaded user from localStorage:', saved.id)
-      currentUser.value = saved
-    } else {
-      console.log('⚠️ No user in localStorage')
+    try {
+      const savedStr = sessionStorage.getItem('et_current_user')
+      const saved = savedStr ? JSON.parse(savedStr) : null
+      if (saved) {
+        console.log('✅ Loaded user from sessionStorage:', saved.id)
+        currentUser.value = saved
+      } else {
+        console.log('⚠️ No user in sessionStorage')
+        currentUser.value = null
+      }
+    } catch (e) {
       currentUser.value = null
     }
   }
@@ -31,8 +36,12 @@ export const useAuthStore = defineStore('auth', () => {
   // Persist whenever state changes
   function _persist() {
     storage.set('et_users', users.value)
-    storage.set('et_current_user', currentUser.value)
-    console.log('💾 Persisted to localStorage')
+    if (currentUser.value) {
+      sessionStorage.setItem('et_current_user', JSON.stringify(currentUser.value))
+    } else {
+      sessionStorage.removeItem('et_current_user')
+    }
+    console.log('💾 Persisted users to local, session to session')
   }
 
   // ── Getters ───────────────────────────────────────────────────────
@@ -54,7 +63,8 @@ export const useAuthStore = defineStore('auth', () => {
       email,
       password,
       role,
-      verified: false
+      verified: false,
+      currency: 'USD'
     }
     
     console.log('✅ Creating new user:', newUser.id)
@@ -83,7 +93,7 @@ export const useAuthStore = defineStore('auth', () => {
   function logout() {
     console.log('👋 User logged out')
     currentUser.value = null
-    storage.remove('et_current_user')
+    sessionStorage.removeItem('et_current_user')
   }
 
   function verifyEmail() {
@@ -136,9 +146,24 @@ export const useAuthStore = defineStore('auth', () => {
     // If deleting current user, logout
     if (currentUser.value?.id === userId) {
       currentUser.value = null
+      sessionStorage.removeItem('et_current_user')
     }
     
     _persist()
+  }
+
+  // User: Update own preferences
+  function updatePreferences(prefs) {
+    if (!currentUser.value) return false
+    
+    const index = users.value.findIndex(u => u.id === currentUser.value.id)
+    if (index !== -1) {
+      users.value[index] = { ...users.value[index], ...prefs }
+      currentUser.value = { ...currentUser.value, ...prefs }
+      _persist()
+      return true
+    }
+    return false
   }
 
   // Admin: update user information
@@ -208,6 +233,7 @@ export const useAuthStore = defineStore('auth', () => {
     deleteUser,
     updateUser,
     getUserById,
+    updatePreferences,
     initializeAuth
   }
 })

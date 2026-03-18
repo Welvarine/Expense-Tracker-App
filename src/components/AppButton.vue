@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, useAttrs } from 'vue'
 
 const props = defineProps({
   variant: { type: String, default: 'primary' }, // primary, secondary, danger, ghost
@@ -18,7 +18,7 @@ const classes = computed(() => {
 </script>
 
 <template>
-  <button :class="classes" :disabled="disabled || loading">
+  <button :class="classes" :disabled="disabled || loading" v-bind="$attrs">
     <div v-if="loading" class="spinner"></div>
     <slot v-else></slot>
   </button>

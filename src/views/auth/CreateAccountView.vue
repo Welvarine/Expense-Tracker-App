@@ -18,13 +18,22 @@ const form = reactive({
   name: '',
   email: '',
   password: '',
+  confirmPassword: '',
   role: 'user'
 })
+
+// Custom validator for confirm password
+const isMatchPassword = (value) => {
+  if (!value) return 'Please confirm your password'
+  if (value !== form.password) return 'Passwords do not match'
+  return ''
+}
 
 const { errors, validate } = useFormValidation({
   name: [isRequired],
   email: [isRequired, isValidEmail],
-  password: [isRequired, isStrongPassword]
+  password: [isRequired, isStrongPassword],
+  confirmPassword: [isMatchPassword]
 })
 
 const roleOptions = [
@@ -34,7 +43,13 @@ const roleOptions = [
 
 async function submit() {
   topError.value = ''
-  if (!validate(form)) return
+  
+  // Clean all fields first
+  const isValid = validate(form)
+  if (!isValid) {
+    topError.value = 'Please fix the errors below to continue.'
+    return
+  }
 
   loading.value = true
   await new Promise(r => setTimeout(r, 600))
@@ -53,12 +68,12 @@ async function submit() {
 <template>
   <div class="screen signup-screen">
     <!-- Theme Toggle -->
-    <button class="theme-toggle-btn" @click="toggleTheme" :title="isDark ? 'Light Mode' : 'Dark Mode'">
+    <button class="theme-toggle-btn" @click="toggleTheme" :title="isDark ? 'Light Mode' : 'Dark Mode'" aria-label="Toggle dark mode">
       {{ isDark ? '☀️' : '🌙' }}
     </button>
 
     <div class="signup-header">
-      <button class="back-btn" @click="router.push('/')">
+      <button class="back-btn" @click="router.push('/')" aria-label="Go back to home">
         ← Back to Home
       </button>
       <h2 class="header-title">
@@ -73,13 +88,14 @@ async function submit() {
       <span class="error-text">{{ topError }}</span>
     </div>
 
-    <form @submit.prevent="submit" class="signup-form">
+    <form @submit.prevent="submit" class="signup-form" novalidate>
       <div class="form-group">
-        <label class="form-label">
-          <span class="input-icon">👤</span>
+        <label class="form-label" for="signup-name">
+          <span class="input-icon" aria-hidden="true">👤</span>
           Full Name
         </label>
         <AppInput 
+          id="signup-name"
           v-model="form.name" 
           :error="errors.name" 
           placeholder="John Doe" 
@@ -87,11 +103,12 @@ async function submit() {
       </div>
       
       <div class="form-group">
-        <label class="form-label">
-          <span class="input-icon">📧</span>
+        <label class="form-label" for="signup-email">
+          <span class="input-icon" aria-hidden="true">📧</span>
           Email Address
         </label>
         <AppInput 
+          id="signup-email"
           type="email" 
           v-model="form.email" 
           :error="errors.email" 
@@ -100,11 +117,12 @@ async function submit() {
       </div>
       
       <div class="form-group">
-        <label class="form-label">
-          <span class="input-icon">🔑</span>
+        <label class="form-label" for="signup-password">
+          <span class="input-icon" aria-hidden="true">🔑</span>
           Password
         </label>
         <AppInput 
+          id="signup-password"
           type="password" 
           v-model="form.password" 
           :error="errors.password" 
@@ -113,11 +131,26 @@ async function submit() {
       </div>
 
       <div class="form-group">
-        <label class="form-label">
-          <span class="input-icon">🎯</span>
+        <label class="form-label" for="signup-confirm-password">
+          <span class="input-icon" aria-hidden="true">🔒</span>
+          Confirm Password
+        </label>
+        <AppInput 
+          id="signup-confirm-password"
+          type="password" 
+          v-model="form.confirmPassword" 
+          :error="errors.confirmPassword" 
+          placeholder="Re-enter password" 
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="signup-role">
+          <span class="input-icon" aria-hidden="true">🎯</span>
           Account Role
         </label>
         <AppInput 
+          id="signup-role"
           type="select" 
           v-model="form.role" 
           :options="roleOptions" 

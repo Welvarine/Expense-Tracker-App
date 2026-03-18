@@ -7,7 +7,6 @@ import SummaryCard from '../../components/SummaryCard.vue'
 const auth = useAuthStore()
 const store = useTransactionStore()
 
-const totals = store.platformTotals
 const totalUsers = auth.allUsers.length
 </script>
 
@@ -21,14 +20,14 @@ const totalUsers = auth.allUsers.length
     <div class="card mb-4 bg-purple-dim border-purple text-center py-6 block-stats">
       <p class="text-xs font-bold text-purple uppercase tracking-wider mb-2">Platform Volume</p>
       <h2 class="text-4xl font-bold tracking-tight text-purple-dark">
-        {{ formatCurrency(totals.income + totals.expense) }}
+        {{ formatCurrency(store.platformTotals.income + store.platformTotals.expense) }}
       </h2>
-      <p class="text-xs text-purple mt-2 font-bold">{{ totals.count }} Total Transactions</p>
+      <p class="text-xs text-purple mt-2 font-bold">{{ store.platformTotals.count }} Total Transactions</p>
     </div>
 
     <div class="grid-2 mb-6">
-      <SummaryCard title="Platform Income" icon="🏢" :amount="formatCurrency(totals.income)" variant="income" />
-      <SummaryCard title="Platform Expense" icon="🏢" :amount="formatCurrency(totals.expense)" variant="expense" />
+      <SummaryCard title="Platform Income" icon="🏢" :amount="formatCurrency(store.platformTotals.income)" variant="income" />
+      <SummaryCard title="Platform Expense" icon="🏢" :amount="formatCurrency(store.platformTotals.expense)" variant="expense" />
     </div>
 
     <div class="card flex justify-between items-center p-4">

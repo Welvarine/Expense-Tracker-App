@@ -38,13 +38,13 @@ provide('toggleTheme', toggleTheme)
     <SidebarNav v-if="auth.isAuthenticated" />
 
     <!-- Main content area -->
-    <div class="main-content" :class="{ 'with-sidebar': auth.isAuthenticated }">
+    <main class="main-content" :class="{ 'with-sidebar': auth.isAuthenticated }">
       <RouterView v-slot="{ Component, route }">
         <Transition name="fade" mode="out-in">
           <component :is="Component" :key="route.name" />
         </Transition>
       </RouterView>
-    </div>
+    </main>
   </div>
 </template>
 
