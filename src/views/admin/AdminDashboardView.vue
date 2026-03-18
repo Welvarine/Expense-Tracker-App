@@ -18,13 +18,12 @@ const totalUsers = auth.allUsers.length
       <p class="text-sm mt-1">Platform overview and totals.</p>
     </header>
 
-    <div class="card mb-4 bg-purple-dim border-purple text-center py-6 block-stats">
-      <p class="text-xs font-bold text-purple uppercase tracking-wider mb-2">Platform Volume</p>
-      <h2 class="text-4xl font-bold tracking-tight text-purple-dark">
-        {{ formatCurrency(totals.income + totals.expense) }}
-      </h2>
-      <p class="text-xs text-purple mt-2 font-bold">{{ totals.count }} Total Transactions</p>
-    </div>
+<div class="card mb-4 bg-purple-dim border-purple text-center py-6 block-stats">
+  <p class="text-xs font-bold text-purple uppercase tracking-wider mb-2">Platform Volume</p>
+  <h2 class="text-4xl font-bold tracking-tight">
+    {{ formatCurrency(totals.income + totals.expense) }}
+  </h2>
+</div>
 
     <div class="grid-2 mb-6">
       <SummaryCard title="Platform Income" icon="🏢" :amount="formatCurrency(totals.income)" variant="income" />
@@ -51,10 +50,10 @@ const totalUsers = auth.allUsers.length
 .mb-4 { margin-bottom: 24px; }
 .mb-6 { margin-bottom: 32px; }
 .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 32px; }
-.bg-purple-dim { background: var(--purple-dim); }
+.bg-purple-dim { background: var(--purple); }
 .border-purple { border-color: var(--purple); }
 .text-purple { color: var(--purple); }
-.text-purple-dark { color: #5b21b6; }
+.text-purple-dark { color: #e6d7ff; }
 .block-stats { display: block; }
 .p-4 { padding: 20px 40px; }
 .flex { display: flex; }
@@ -68,7 +67,7 @@ const totalUsers = auth.allUsers.length
 .text-2xl { font-size: 24px; }
 .text-4xl { font-size: 36px; }
 .text-purple { color: var(--purple); }
-.text-purple-dark { color: #5b21b6; }
+.text-purple-dark { color: #e6d7ff; }
 .uppercase { text-transform: uppercase; }
 .tracking-wider { letter-spacing: 0.05em; }
 .py-6 { padding: 24px 0; }
