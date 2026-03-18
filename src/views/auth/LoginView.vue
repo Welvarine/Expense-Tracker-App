@@ -81,7 +81,7 @@ async function submit() {
           type="email" 
           v-model="form.email" 
           :error="errors.email"
-          placeholder="your@email.com"
+          placeholder=""
         />
       </div>
 
@@ -292,7 +292,7 @@ async function submit() {
 .forgot-link {
   background: none;
   border: none;
-  color: var(--blue);
+  color: var(--blue-dark);
   cursor: pointer;
   font-weight: 600;
   padding: 0;
@@ -314,7 +314,7 @@ async function submit() {
 .signup-link {
   background: none;
   border: none;
-  color: var(--blue);
+  color: var(--blue-dark);
   cursor: pointer;
   font-weight: 600;
   padding: 0;

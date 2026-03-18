@@ -98,7 +98,7 @@ async function submit() {
           id="signup-name"
           v-model="form.name" 
           :error="errors.name" 
-          placeholder="John Doe" 
+          placeholder="" 
         />
       </div>
       
@@ -112,7 +112,7 @@ async function submit() {
           type="email" 
           v-model="form.email" 
           :error="errors.email" 
-          placeholder="john@example.com" 
+          placeholder="" 
         />
       </div>
       
@@ -305,7 +305,7 @@ async function submit() {
 .login-link {
   background: none;
   border: none;
-  color: var(--blue);
+  color: var(--blue-dark);
   cursor: pointer;
   font-weight: 600;
   padding: 0;

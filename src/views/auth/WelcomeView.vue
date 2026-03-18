@@ -466,13 +466,13 @@ body {
 }
 
 .cta-primary :deep(.btn) {
-  background: #0EA5E9;
+  background:#16164F;
   color: white;
-  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+  box-shadow: 0 4px 12px rgba(1, 132, 192, 0.25);
 }
 
 .cta-primary :deep(.btn):hover {
-  background: #0284C7;
+  background:#16164F;
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(14, 165, 233, 0.35);
 }
@@ -596,6 +596,7 @@ body {
 
 .tx-icon {
   font-size: 18px;
+  color:#9C2B17;
   flex-shrink: 0;
 }
 
@@ -619,7 +620,7 @@ body {
 .tx-amount {
   font-size: 12px;
   font-weight: 700;
-  color: #EF4444;
+  color:#9C2B17;
   margin: 0;
 }
 

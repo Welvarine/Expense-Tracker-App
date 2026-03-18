@@ -205,17 +205,6 @@ function editTransaction(tx) {
 .header-left { flex: 1; }
 .page-title { font-size: 32px; font-weight: 800; color: var(--text); margin: 0; }
 .greeting { font-size: 14px; color: var(--text2); margin: 6px 0 0 0; font-weight: 500; }
-.header-tools { display: flex; align-items: center; gap: 16px; }
-.currency-select { 
-  background: var(--surface); 
-  border: 1.5px solid var(--border); 
-  border-radius: 8px; 
-  padding: 6px 12px; 
-  color: var(--text); 
-  font-weight: 600; 
-  font-size: 13px;
-  cursor: pointer;
-}
 .avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25); flex-shrink: 0; }
 
 .balance-area { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 32px; }
@@ -231,7 +220,7 @@ function editTransaction(tx) {
 .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
 .quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 32px; }
 .action-btn { padding: 14px 20px; border-radius: 12px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font); }
-.action-btn.primary { background: var(--blue); color: #fff; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2); }
+.action-btn.primary { background: var(--blue); color:#16164F; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2); }
 .action-btn.primary:hover { background: var(--blue-dark); transform: translateY(-2px); }
 .action-btn.secondary { background: var(--surface2); color: var(--text); border: 1.5px solid var(--border); }
 .action-btn.secondary:hover { border-color: var(--blue); background: var(--blue-dim); }
@@ -245,7 +234,7 @@ function editTransaction(tx) {
 .empty-icon { font-size: 64px; margin-bottom: 16px; }
 .empty-title { font-size: 20px; font-weight: 700; color: var(--text); margin: 0 0 8px 0; }
 .empty-text { font-size: 14px; color: var(--text2); margin: 0 0 20px 0; }
-.empty-action-btn { padding: 12px 24px; background: var(--blue); color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+.empty-action-btn { padding: 12px 24px; background: var(--blue); color: #16164F; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
 .empty-action-btn:hover { background: var(--blue-dark); transform: translateY(-2px); }
 .transactions-card { margin-bottom: 20px; }
 .transactions-list { padding: 0; }
