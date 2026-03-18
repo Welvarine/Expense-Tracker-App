@@ -9,7 +9,7 @@
   --surface:      #ffffff;
   --surface2:     #f0f9ff;
   --border:       #bae6fd;
-  --text:         #0c2d4d;
+  --text:         #16164F;
   --text2:        #1e5a8e;
   --text3:        #4b7ba7;
 
@@ -21,10 +21,10 @@
   --red-dark:     #b91c1c;
   --blue:         #0ea5e9;
   --blue-dim:     #cffafe;
-  --blue-dark:    #0369a1;
+  --blue-dark:    #121242
   --amber:        #f59e0b;
   --amber-dim:    #fef3c7;
-  --purple:       #8b5cf6;
+  --purple:        #e6d7ff
   --purple-dim:   #ede9fe;
 
   --radius:       14px;
@@ -162,7 +162,7 @@ p  { font-size: 14px; color: var(--text2); line-height: 1.6; }
 
 .btn-primary {
   background: var(--blue);
-  color: #fff;
+  color: #16164F;
 }
 .btn-primary:hover:not(:disabled) { background: var(--blue-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(14, 165, 233, .35); }
 
